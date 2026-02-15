@@ -1,8 +1,8 @@
-export function Auth({onLogin}) {
+export function Auth({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const fdata= new FormData(e.target)
-        let username  =fdata.get("username")
+        const fdata = new FormData(e.target)
+        let username = fdata.get("username")
         let password = fdata.get("password")
 
 
@@ -10,10 +10,10 @@ export function Auth({onLogin}) {
         console.log("the encoded token is the following", token)
 
         const res = await fetch("https://learn.reboot01.com/api/auth/signin", {
-        method: "POST",
-        headers: {
-            Authorization: `Basic ${token}`,
-        },
+            method: "POST",
+            headers: {
+                Authorization: `Basic ${token}`,
+            },
         });
 
         if (!res.ok) {
@@ -27,14 +27,39 @@ export function Auth({onLogin}) {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="username" id="username"></input>
-                <label htmlFor="username">Username</label>
-                <input type="password" name="password" id="password"></input>
-                <label htmlFor="password">Password</label>
-                <button type="submit" ></button>
-            </form>
+        <div className="auth-container">
+            <div className="auth-card">
+                <div className="auth-header">
+                    <h1>Reboot 01</h1>
+                    <p>Sign in to your account</p>
+                </div>
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            id="username"
+                            placeholder="Enter your username"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="auth-button">Sign In</button>
+                </form>
+                <div className="auth-footer">
+                    <p>© 2024 Reboot 01. All rights reserved.</p>
+                </div>
+            </div>
         </div>
     )
 }

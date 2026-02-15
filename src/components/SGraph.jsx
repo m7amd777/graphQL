@@ -87,8 +87,9 @@ export function Sgraph({ plot }) {
                 maxHeight: '80vh', 
                 aspectRatio: 1,
                 backgroundColor: '#0f172a',
-                padding: '30px',
+                padding: '0',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+                fontSize: "20px" 
 
             }}
             responsive

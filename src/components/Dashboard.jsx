@@ -1,7 +1,7 @@
 import { Profile } from "./Profile"
 import { Graphs } from "./Graphs"
 import { useEffect, useState } from "react"
-import { userinfo, auditinfo } from "../queries/UserData"
+import { userinfo, auditinfo, allXp, level } from "../queries/UserData"
 import { trans1, skills } from "../queries/GraphQueries"
 
 
@@ -12,29 +12,24 @@ export function Dashboard({ onLogout }) {
         fetchAll();
     }, [])  // Empty array = run once on mount
 
-    const logOut = () => {
-        localStorage.removeItem("jwt")
-        onLogout();
-    }
+    // const logOut = () => {
+    //     localStorage.removeItem("jwt")
+    //     onLogout();
+    // }
 
     async function fetchAll() {
-        const queryItems = [userinfo(), trans1(), skills(), auditinfo()]
+        const queryItems = [userinfo(), allXp(), level(), trans1(), skills(), auditinfo()]
 
         const results = await Promise.all(
             queryItems.map(item => fetchQuery(item))
         )
-
-        console.log(results)
         setdata(results)
         return results
     }
 
 
     async function fetchQuery(q) {
-
-        console.log("fetching the query, ", q)
         const token = localStorage.getItem("jwt")
-        console.log("token", token)
 
         const res = await fetch("https://learn.reboot01.com/api/graphql-engine/v1/graphql", {
             method: "POST",
@@ -59,9 +54,8 @@ export function Dashboard({ onLogout }) {
 
     return (
         <>
-            <button onClick={logOut}>Logout</button>
-            <Profile profile={data[0]} />
-            <Graphs info={data.slice(1)}/>
+            <Profile profile={data.slice(0, 3)} onLogout={onLogout} />
+            <Graphs info={data.slice(3)} />
         </>
     );
 }

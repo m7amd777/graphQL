@@ -1,32 +1,41 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 // import {Profile} from'./components/Profile.jsx'
-import {Dashboard} from'./components/Dashboard.jsx'
+import { Dashboard } from './components/Dashboard.jsx'
 import { Auth } from './components/Auth.jsx'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=> {
-    console.log("use effect is called")
-    if(!isLoggedIn) {
-      if (localStorage.getItem("jwt")) {
-        console.log("the local storage is having jwt so we setting to logged int")
-        setIsLoggedIn(true);
-      } else {
-        console.log("no local storage leaccing")
-        return;
-      }
+  useEffect(() => {
+    if (!isLoggedIn && localStorage.getItem("jwt")) {
+      console.log("the local storage is having jwt so we setting to logged int")
+      setIsLoggedIn(true);
     }
-    console.log("we logged in so we are fetching")
   }, [isLoggedIn])
 
   return (
     <div className='bigContainer'>
-      {!isLoggedIn && <Auth onLogin = {()=> setIsLoggedIn(true)}/>}
-      {isLoggedIn && <Dashboard onLogout= {()=> setIsLoggedIn(false)}/>}
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            isLoggedIn
+              ? <Navigate to="/" replace />
+              : <Auth onLogin={() => setIsLoggedIn(true)} />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            isLoggedIn
+              ? <Dashboard onLogout={() => setIsLoggedIn(false)} />
+              : <Navigate to="/login" replace />
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   )
 }
@@ -34,7 +43,7 @@ function App() {
 
 // async function fetchBasicCredentials(){
 
-  
+
 //     const rea = {
 //     query: `
 //       query {

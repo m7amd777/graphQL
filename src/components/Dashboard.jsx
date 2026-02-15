@@ -1,7 +1,7 @@
 import { Profile } from "./Profile"
 import { Graphs } from "./Graphs"
 import { useEffect, useState } from "react"
-import { userinfo } from "../queries/UserData"
+import { userinfo, auditinfo } from "../queries/UserData"
 import { trans1, skills } from "../queries/GraphQueries"
 
 
@@ -18,7 +18,7 @@ export function Dashboard({ onLogout }) {
     }
 
     async function fetchAll() {
-        const queryItems = [userinfo(), trans1(), skills()]
+        const queryItems = [userinfo(), trans1(), skills(), auditinfo()]
 
         const results = await Promise.all(
             queryItems.map(item => fetchQuery(item))
@@ -57,19 +57,11 @@ export function Dashboard({ onLogout }) {
 
 
 
-
-
-
-
-
-
-
-
     return (
         <>
             <button onClick={logOut}>Logout</button>
             <Profile profile={data[0]} />
-            <Graphs />
+            <Graphs info={data.slice(1)}/>
         </>
     );
 }

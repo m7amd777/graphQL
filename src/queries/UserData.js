@@ -25,3 +25,31 @@ export function userinfo() {
     return query
 
 }
+
+
+
+export function auditinfo() {
+    const query = `
+        query auditInfo {
+            user {
+                auditsAssigned
+                audits {
+                    createdAt
+                    endAt
+                    closedAt
+                    closureType
+                    group {
+                        captainLogin
+                        path
+                    }
+                }
+            }
+        }
+    `
+    return query
+
+}
+
+
+
+

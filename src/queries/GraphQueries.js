@@ -17,16 +17,9 @@ export function trans1() {
             ){
                 createdAt
                 amount
-                transaction_type {
-                type
-                }
                 object {
                 name
-                object_type {
-                    type
                 }
-                }
-                userLogin
             }
             }
 

@@ -24,6 +24,8 @@ export function Dashboard({ onLogout }) {
             queryItems.map(item => fetchQuery(item))
         )
         setdata(results)
+
+        console.log("the resylts is ", results[4])
         return results
     }
 

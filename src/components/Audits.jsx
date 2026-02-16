@@ -50,7 +50,7 @@ export function Audits({ plot }) {
             boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
             color: 'white'
         }}>
-            <h2 style={{ marginBottom: '20px', fontWeight: 500 }}>Audit History</h2>
+            <h2 style={{ marginBottom: '20px' , fontSize: '30px'}}>Audit History</h2>
 
             <div style={{ overflowX: 'auto' }}>
                 <table style={{

@@ -1,44 +1,5 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import { useMemo } from 'react'
-// #region Sample data
-const data = [
-    {
-        subject: 'Math',
-        A: 120,
-        B: 110,
-        fullMark: 150,
-    },
-    {
-        subject: 'Chinese',
-        A: 98,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: 'English',
-        A: 86,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: 'Geography',
-        A: 99,
-        B: 100,
-        fullMark: 150,
-    },
-    {
-        subject: 'Physics',
-        A: 85,
-        B: 90,
-        fullMark: 150,
-    },
-    {
-        subject: 'History',
-        A: 65,
-        B: 85,
-        fullMark: 150,
-    },
-];
 
 // #endregion
 export function Sgraph({ plot }) {
@@ -79,7 +40,9 @@ export function Sgraph({ plot }) {
 
 
     return (
-        <RadarChart
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#0f172a' }}>
+            <h2 style={{ color: '#fff', fontSize: '30px' }}>Skills Amount Distribution (not completion rate)</h2>
+            <RadarChart
             style={{ backgroundColor: '#0f172a', 
                 width: '100%', 
                 height: '100%',
@@ -88,9 +51,8 @@ export function Sgraph({ plot }) {
                 aspectRatio: 1,
                 backgroundColor: '#0f172a',
                 padding: '0',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+                boxShadow: '0 10px 0 rgba(0,0,0,0.4)',
                 fontSize: "20px" 
-
             }}
             responsive
             outerRadius="80%"
@@ -107,6 +69,7 @@ export function Sgraph({ plot }) {
             <PolarRadiusAxis />
             <Radar name="skills" dataKey="total" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
         </RadarChart>
+        </div>
     );
 };
 

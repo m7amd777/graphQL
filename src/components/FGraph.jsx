@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react"
+import { formatNumber } from "../utils/formatters.js"
 
 export function Fgraph({ plot }) {
 
@@ -72,8 +73,8 @@ export function Fgraph({ plot }) {
                 overflowX: "auto"
             }}
         >
-            <h2 style={{ marginBottom: "20px", fontWeight: 500 }}>
-                XP Progression
+            <h2 style={{ marginBottom: "20px", fontSize:'30px'}}>
+                XP Progression Across Completed projects
             </h2>
 
             <svg
@@ -187,10 +188,11 @@ export function Fgraph({ plot }) {
                                 x={x}
                                 y={y - 14}
                                 textAnchor="middle"
-                                fontSize="11"
+                                fontSize="9"
                                 fill="#94a3b8"
                             >
-                                +{p.amount}
+                                +{formatNumber
+                                    (p.amount)}
                             </text>
 
                             {/* Project Label (Rotated) */}
@@ -226,10 +228,10 @@ export function Fgraph({ plot }) {
                     x={padding - 10}
                     y={padding}
                     textAnchor="end"
-                    fontSize="12"
+                    fontSize="9"
                     fill="#cbd5e1"
                 >
-                    {maxXP}
+                    {formatNumber(maxXP)}
                 </text>
 
             </svg>

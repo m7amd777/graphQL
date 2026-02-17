@@ -35,12 +35,12 @@ export function Auth({ onLogin }) {
                 </div>
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="username">Username</label>
+                        <label htmlFor="username">Username or Email</label>
                         <input
                             type="text"
                             name="username"
                             id="username"
-                            placeholder="Enter your username"
+                            placeholder="Enter your username or email"
                             required
                         />
                     </div>

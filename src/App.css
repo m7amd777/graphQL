@@ -275,3 +275,55 @@ body{
 .xp-section {
   width: 80%;
 }
+
+
+.audit-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.audit-tooltip .info-icon {
+  color: #94a3b8;
+  font-size: 12px;
+  cursor: help;
+}
+
+.audit-tooltip .tooltip-text {
+  position: absolute;
+  bottom: 140%;
+  left: 0;
+  min-width: 220px;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 8px 10px;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.audit-tooltip:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#tooltip2txt.tooltip-text {
+  left: 90%;
+}
+
+#tooltip2.audit-tooltip .tooltip-text {
+  transform: translateY(20px);
+}
+
+#tooltip2.audit-tooltip:hover .tooltip-text {
+  transform: translateY(60px);
+}

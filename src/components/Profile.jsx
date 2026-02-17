@@ -47,7 +47,13 @@ export function Profile({ profile, onLogout }) {
                 <div className="profile-info">
                     <div className="profile-username">{user.login}</div>
                     <div className="profile-stats">
-                        <span>Assigned Audits: <strong>{user.auditsAssigned || 25}</strong></span>
+                        <span className="audit-tooltip">
+                            Total Audits Assigned By System: <strong>{user.auditsAssigned || 25}</strong>
+                            <span className="info-icon" aria-label="What does this mean?">ⓘ</span>
+                            <span className="tooltip-text">
+                                This is the total number of audits the system assigned to you with an end date (not the number you have available).
+                            </span>
+                        </span>
                         <span className="stat-separator">•</span>
                         <span>Audit Ratio: <strong>{user.auditRatio.toFixed(2) || 1.1}</strong></span>
                         <span className="stat-separator">•</span>
@@ -73,7 +79,7 @@ export function Profile({ profile, onLogout }) {
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#1e293b"}
                         >
                             <span style={{ color: "#cbd5e1", fontSize: "14px", fontWeight: "500" }}>
-                                Total XP: <strong style={{ color: "#38bdf8", fontWeight: "700" }}>{formatNumber(totalxp)}</strong>
+                                Total Lifetime XP: <strong style={{ color: "#38bdf8", fontWeight: "700" }}>{formatNumber(totalxp)}</strong>
                             </span>
                             <span style={{ fontSize: "12px", color: "#94a3b8" }}>
                                 {expandXp ? "▼" : "▶"} ({xpByPath.length} paths)

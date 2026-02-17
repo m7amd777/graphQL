@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
 // import {Profile} from'./components/Profile.jsx'
 import { Dashboard } from './components/Dashboard.jsx'
 import { Auth } from './components/Auth.jsx'
+import { useAuth } from './context/AuthContext.jsx'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout, loading } = useAuth();
 
-  useEffect(() => {
-    if (!isLoggedIn && localStorage.getItem("jwt")) {
-      console.log("the local storage is having jwt so we setting to logged int")
-      setIsLoggedIn(true);
-    }
-  }, [isLoggedIn])
+  if (loading) {
+    return <div className="loading-container">Loading...</div>;
+  }
 
   return (
     <div className='bigContainer'>
@@ -23,14 +20,14 @@ function App() {
           element={
             isLoggedIn
               ? <Navigate to="/" replace />
-              : <Auth onLogin={() => setIsLoggedIn(true)} />
+              : <Auth />
           }
         />
         <Route
           path="/"
           element={
             isLoggedIn
-              ? <Dashboard onLogout={() => setIsLoggedIn(false)} />
+              ? <Dashboard onLogout={logout} />
               : <Navigate to="/login" replace />
           }
         />

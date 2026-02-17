@@ -4,17 +4,17 @@ import { Audits } from "./Audits"
 
 
 
-export function Graphs({info}){
+export function Graphs({ info }) {
     return (
         <>
             <div className="graphs">
-                <Audits plot={info[2]}/>
+                <Audits plot={info[2]} />
             </div>
             <div className="graphs">
-                <Fgraph plot={info[0]}/>
+                <Fgraph plot={info[0]} />
             </div>
             <div className="graphs">
-                <Sgraph plot={info[1]}/>
+                <Sgraph plot={info[1]} />
             </div>
         </>
     )

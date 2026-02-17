@@ -12,10 +12,10 @@ export function Dashboard({ onLogout }) {
         fetchAll();
     }, [])  // Empty array = run once on mount
 
-    // const logOut = () => {
-    //     localStorage.removeItem("jwt")
-    //     onLogout();
-    // }
+    const logOut = () => {
+        localStorage.removeItem("jwt")
+        onLogout();
+    }
 
     async function fetchAll() {
         const queryItems = [userinfo(), allXp(), level(), trans1(), skills(), auditinfo()]
@@ -23,8 +23,8 @@ export function Dashboard({ onLogout }) {
         const results = await Promise.all(
             queryItems.map(item => fetchQuery(item))
         )
+        console.log(results)
         setdata(results)
-
         console.log("the resylts is ", results[4])
         return results
     }
@@ -49,6 +49,7 @@ export function Dashboard({ onLogout }) {
             return
         }
         const data = await res.json();
+
         return data
     }
 

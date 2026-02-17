@@ -1,29 +1,30 @@
-export function Auth({ onLogin }) {
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
+
+export function Auth() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const fdata = new FormData(e.target)
-        let username = fdata.get("username")
-        let password = fdata.get("password")
+        setError('');
+        setLoading(true);
 
+        const fdata = new FormData(e.target);
+        const username = fdata.get("username");
+        const password = fdata.get("password");
 
-        const token = btoa(`${username}:${password}`);
-        console.log("the encoded token is the following", token)
-
-        const res = await fetch("https://learn.reboot01.com/api/auth/signin", {
-            method: "POST",
-            headers: {
-                Authorization: `Basic ${token}`,
-            },
-        });
-
-        if (!res.ok) {
-            throw new Error("Login failed")
+        try {
+            await login(username, password);
+            navigate('/');
+        } catch (err) {
+            setError(err.message || 'Login failed. Please check your credentials.');
+        } finally {
+            setLoading(false);
         }
-        const data = await res.json();
-        const jwt = data;
-        console.log(jwt)
-        localStorage.setItem("jwt", jwt);
-        onLogin();
     }
 
     return (
@@ -54,7 +55,10 @@ export function Auth({ onLogin }) {
                             required
                         />
                     </div>
-                    <button type="submit" className="auth-button">Sign In</button>
+                    {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+                    <button type="submit" className="auth-button" disabled={loading}>
+                        {loading ? 'Signing In...' : 'Sign In'}
+                    </button>
                 </form>
                 <div className="auth-footer">
                     <p>© 2024 Reboot 01. All rights reserved.</p>

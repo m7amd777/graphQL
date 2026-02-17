@@ -20,7 +20,6 @@ export function Sgraph({ plot }) {
             return acc
         }, {})
 
-        console.log(totals)
         const aaa = Object.entries(totals)
             .map(([skill, total]) => ({ skill, total }))
             .sort((a, b) => b.total - a.total)

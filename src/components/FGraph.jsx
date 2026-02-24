@@ -55,7 +55,6 @@ export function Fgraph({ plot }) {
                         Total XP: {formatNumber(data.totalXP)}
                     </p>
                     <p style={{ margin: '4px 0', fontSize: '11px', color: '#6366f1' }}>
-                        +{formatNumber(data.amount)} XP
                     </p>
                 </div>
             )
@@ -71,18 +70,21 @@ export function Fgraph({ plot }) {
                 borderRadius: "0",
                 boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
                 color: "white",
+                width: "100%",
                 maxWidth: "100%",
-                height: "600px"
+                height: "100%",
+                marginBottom: "30px",
+                boxSizing: "border-box",
             }}
         >
             <h2 style={{ marginBottom: "20px", fontSize: '30px' }}>
                 XP Progression Across Completed Projects
             </h2>
 
-            <ResponsiveContainer width="100%" height="90%">
+            <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart
                     data={processed}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                    margin={{ top: 20, right: 80, left: 20, bottom: 80 }}
                 >
                     <defs>
                         <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">

@@ -56,7 +56,7 @@ export function Sgraph({ plot }) {
 
 
     return (
-        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#0f172a' }}>
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#0f172a', padding: '30px', boxSizing: 'border-box', boxShadow: "0 10px 30px rgba(0,0,0,0.4)", }}>
             <span className="audit-tooltip" id="tooltip2">
                 <h2 style={{ color: '#fff', fontSize: '30px' }}>Skills Amount Distribution</h2>
                 <span className="info-icon" aria-label="What does this mean?">ⓘ</span>
@@ -66,14 +66,12 @@ export function Sgraph({ plot }) {
             </span>
             <RadarChart
                 style={{
-                    backgroundColor: '#0f172a',
+                    // backgroundColor: '#0f172a',
                     width: '100%',
                     height: '100%',
                     maxWidth: '100%',
                     maxHeight: '80vh',
                     aspectRatio: 1,
-                    padding: '0',
-                    boxShadow: '0 10px 0 rgba(0,0,0,0.4)',
                     fontSize: "20px"
                 }}
                 responsive

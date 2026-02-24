@@ -10,11 +10,14 @@ export function Graphs({ info }) {
             <div className="graphs">
                 <Audits plot={info[2]} />
             </div>
-            <div className="graphs">
-                <Fgraph plot={info[0]} />
-            </div>
-            <div className="graphs">
-                <Sgraph plot={info[1]} />
+
+            <div className="graphs-grid">
+                <div className="graphs graph-half">
+                    <Fgraph plot={info[0]} />
+                </div>
+                <div className="graphs graph-half">
+                    <Sgraph plot={info[1]} />
+                </div>
             </div>
         </>
     )

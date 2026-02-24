@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export function Audits({ plot }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 20;
+    const itemsPerPage = 7;
 
     if (!plot || !plot.data || !plot.data.user) {
         return <div style={{ color: 'white', padding: '20px' }}>Loading audits...</div>;
@@ -48,9 +48,11 @@ export function Audits({ plot }) {
             padding: '30px',
             borderRadius: '0',
             boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
-            color: 'white'
+            color: 'white',
+            width: '100%',
+            boxSizing: 'border-box',
         }}>
-            <h2 style={{ marginBottom: '20px' , fontSize: '30px'}}>Audit History</h2>
+            <h2 style={{ marginBottom: '20px', fontSize: '30px' }}>Audit History</h2>
 
             <div style={{ overflowX: 'auto' }}>
                 <table style={{

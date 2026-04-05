@@ -57,10 +57,6 @@ export function Profile({ profile, onLogout }) {
 
                     <div className="profile-stats-grid">
                         <div className="stat-card">
-                            <div className="stat-label">Audits Assigned</div>
-                            <div className="stat-value">{user.auditsAssigned ?? 0}</div>
-                        </div>
-                        <div className="stat-card">
                             <div className="stat-label">Audit Ratio</div>
                             <div className="stat-value">{Number(user.auditRatio ?? 0).toFixed(2)}</div>
                         </div>

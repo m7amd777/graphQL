@@ -32,7 +32,6 @@ export function auditinfo() {
     const query = `
         query auditInfo {
             user {
-                auditsAssigned
                 audits {
                     createdAt
                     endAt

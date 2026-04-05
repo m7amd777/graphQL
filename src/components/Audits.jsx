@@ -10,12 +10,10 @@ export function Audits({ plot }) {
 
     const audits = plot.data.user[0]?.audits || [];
 
-    // Sort audits by createdAt date (most recent first)
     const sortedAudits = [...audits].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
 
-    // Pagination calculations
     const totalPages = Math.ceil(sortedAudits.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -43,63 +41,48 @@ export function Audits({ plot }) {
     };
 
     return (
-        <div style={{
-            backgroundColor: '#0f172a',
-            padding: '30px',
-            borderRadius: '0',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
-            color: 'white',
-            width: '100%',
-            boxSizing: 'border-box',
-        }}>
-            <h2 style={{ marginBottom: '20px', fontSize: '30px' }}>Audit History</h2>
+        <div className="panel audit-panel">
+            <div className="panel-header">
+                <h2 className="panel-title">Audit History</h2>
+                <p className="panel-subtitle">Your latest audits, optimized for smaller screens.</p>
+            </div>
 
-            <div style={{ overflowX: 'auto' }}>
-                <table style={{
-                    width: '100%',
-                    borderCollapse: 'collapse',
-                    fontSize: '14px'
-                }}>
+            <div className="audit-table-wrap">
+                <table className="audit-table">
                     <thead>
-                        <tr style={{ borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
-                            <th style={{ padding: '12px', textAlign: 'left', color: '#94a3b8' }}>Created</th>
-                            <th style={{ padding: '12px', textAlign: 'left', color: '#94a3b8' }}>End Date</th>
-                            <th style={{ padding: '12px', textAlign: 'left', color: '#94a3b8' }}>Status</th>
-                            <th style={{ padding: '12px', textAlign: 'left', color: '#94a3b8' }}>Captain</th>
-                            <th style={{ padding: '12px', textAlign: 'left', color: '#94a3b8' }}>Path</th>
+                        <tr>
+                            <th>Created</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Captain</th>
+                            <th>Path</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentAudits.length === 0 ? (
                             <tr>
-                                <td colSpan="5" style={{ padding: '20px', textAlign: 'center', color: '#64748b' }}>
+                                <td colSpan="5" className="audit-empty">
                                     No audits found
                                 </td>
                             </tr>
                         ) : (
                             currentAudits.map((audit, index) => (
-                                <tr key={index} style={{
-                                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                                    transition: 'background-color 0.2s'
-                                }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(56,189,248,0.1)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                                >
-                                    <td style={{ padding: '12px', color: '#cbd5e1' }}>{formatDate(audit.createdAt)}</td>
-                                    <td style={{ padding: '12px', color: '#cbd5e1' }}>{formatDate(audit.endAt)}</td>
-                                    <td style={{ padding: '12px' }}>
-                                        <span style={{
-                                            padding: '4px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '12px',
-                                            backgroundColor: getStatusStyle(audit.closureType).bg,
-                                            color: getStatusStyle(audit.closureType).color
-                                        }}>
+                                <tr key={index} className="audit-row">
+                                    <td>{formatDate(audit.createdAt)}</td>
+                                    <td>{formatDate(audit.endAt)}</td>
+                                    <td>
+                                        <span
+                                            className="audit-status"
+                                            style={{
+                                                backgroundColor: getStatusStyle(audit.closureType).bg,
+                                                color: getStatusStyle(audit.closureType).color
+                                            }}
+                                        >
                                             {getStatusStyle(audit.closureType).text}
                                         </span>
                                     </td>
-                                    <td style={{ padding: '12px', color: '#cbd5e1' }}>{audit.group?.captainLogin || 'N/A'}</td>
-                                    <td style={{ padding: '12px', color: '#94a3b8', fontSize: '12px' }}>{audit.group?.path || 'N/A'}</td>
+                                    <td>{audit.group?.captainLogin || 'N/A'}</td>
+                                    <td className="audit-path-cell">{audit.group?.path || 'N/A'}</td>
                                 </tr>
                             ))
                         )}
@@ -107,50 +90,68 @@ export function Audits({ plot }) {
                 </table>
             </div>
 
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '12px', color: '#64748b' }}>
-                    Total Audits: <strong style={{ color: '#38bdf8' }}>{sortedAudits.length}</strong>
-                    <span style={{ marginLeft: '15px' }}>
-                        Showing {startIndex + 1}-{Math.min(endIndex, sortedAudits.length)} of {sortedAudits.length}
-                    </span>
+            <div className="audit-cards">
+                {currentAudits.length === 0 ? (
+                    <div className="audit-empty">No audits found</div>
+                ) : (
+                    currentAudits.map((audit, index) => (
+                        <article key={index} className="audit-card">
+                            <div className="audit-card-top">
+                                <div className="audit-card-path">{audit.group?.path || 'N/A'}</div>
+                                <span
+                                    className="audit-status"
+                                    style={{
+                                        backgroundColor: getStatusStyle(audit.closureType).bg,
+                                        color: getStatusStyle(audit.closureType).color
+                                    }}
+                                >
+                                    {getStatusStyle(audit.closureType).text}
+                                </span>
+                            </div>
+
+                            <div className="audit-card-grid">
+                                <div>
+                                    <span className="audit-meta-label">Created</span>
+                                    <span className="audit-meta-value">{formatDate(audit.createdAt)}</span>
+                                </div>
+                                <div>
+                                    <span className="audit-meta-label">End Date</span>
+                                    <span className="audit-meta-value">{formatDate(audit.endAt)}</span>
+                                </div>
+                                <div>
+                                    <span className="audit-meta-label">Captain</span>
+                                    <span className="audit-meta-value">{audit.group?.captainLogin || 'N/A'}</span>
+                                </div>
+                                <div>
+                                    <span className="audit-meta-label">Team</span>
+                                    <span className="audit-meta-value">{audit.group?.object?.name || 'N/A'}</span>
+                                </div>
+                            </div>
+                        </article>
+                    ))
+                )}
+            </div>
+
+            <div className="audit-footer">
+                <div className="audit-summary">
+                    Total Audits: <strong>{sortedAudits.length}</strong>{' '}
+                    Showing {sortedAudits.length === 0 ? 0 : startIndex + 1}-{Math.min(endIndex, sortedAudits.length)} of {sortedAudits.length}
                 </div>
 
                 {totalPages > 1 && (
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <div className="audit-pagination">
                         <button
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
-                            style={{
-                                padding: '8px 16px',
-                                borderRadius: '4px',
-                                border: 'none',
-                                backgroundColor: currentPage === 1 ? '#1e293b' : '#38bdf8',
-                                color: currentPage === 1 ? '#64748b' : 'white',
-                                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-                                fontSize: '12px',
-                                fontWeight: 500,
-                                transition: 'background-color 0.2s'
-                            }}
                         >
                             Previous
                         </button>
-                        <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                        <span className="audit-pagination-status">
                             Page {currentPage} of {totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages}
-                            style={{
-                                padding: '8px 16px',
-                                borderRadius: '4px',
-                                border: 'none',
-                                backgroundColor: currentPage === totalPages ? '#1e293b' : '#38bdf8',
-                                color: currentPage === totalPages ? '#64748b' : 'white',
-                                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
-                                fontSize: '12px',
-                                fontWeight: 500,
-                                transition: 'background-color 0.2s'
-                            }}
                         >
                             Next
                         </button>

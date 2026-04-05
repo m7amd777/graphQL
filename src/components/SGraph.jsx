@@ -1,96 +1,85 @@
-import { Radar, RadarChart, PolarGrid, Tooltip, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
-import { useMemo } from 'react'
+import { Radar, RadarChart, PolarGrid, Tooltip, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { useEffect, useState } from 'react'
 
-// #endregion
-export function Sgraph({ plot }) {
-
-    const sortedData = useMemo(() => {
-        if (!plot?.data?.transaction || plot.data.transaction.length === 0) {
-            console.log("empty")
-            return []
-        }
-        // console.log("data", ...plot.data.transaction)
-        const data = [...plot.data.transaction]
-        const totals = data.reduce((acc, item) => {
-            if (!acc[item.transaction_type.type]) {
-                acc[item.transaction_type.type] = 0;
-            }
-
-            acc[item.transaction_type.type] += item.amount;
-            return acc
-        }, {})
-
-        const aaa = Object.entries(totals)
-            .map(([skill, total]) => ({ skill, total }))
-            .sort((a, b) => b.total - a.total)
-            .slice(0, 6)
-
-        console.log(aaa)
-        const cleanedSkills = aaa.map(item => ({
-            ...item,
-            skill: item.skill.replace(/^skill_/, "")
-        }));
-
-        return cleanedSkills
-
-    }, [plot])
-
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload
-            return (
-                <div style={{
-                    backgroundColor: '#1e293b',
-                    padding: '10px',
-                    border: '1px solid #8884d8',
-                    borderRadius: '4px',
-                    color: 'white'
-                }}>
-                    <p style={{ margin: '4px 0', fontSize: '12px', color: '#cbd5e1' }}>skill: {data.skill}</p>
-                    <p style={{ margin: '4px 0', fontSize: '12px', color: '#cbd5e1' }}>amount : {data.total}</p>
-                </div>
-            )
-        }
-        return null
+function buildSkillData(plot) {
+    if (!plot?.data?.transaction?.length) {
+        return []
     }
 
+    const totals = plot.data.transaction.reduce((acc, item) => {
+        if (!acc[item.transaction_type.type]) {
+            acc[item.transaction_type.type] = 0;
+        }
+
+        acc[item.transaction_type.type] += item.amount;
+        return acc
+    }, {})
+
+    return Object.entries(totals)
+        .map(([skill, total]) => ({
+            skill: skill.replace(/^skill_/, ""),
+            total
+        }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 6)
+}
+
+function SkillsTooltip({ active, payload }) {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload
+        return (
+            <div className="chart-tooltip chart-tooltip--radar">
+                <p>Skill: {data.skill}</p>
+                <p>Amount: {data.total}</p>
+            </div>
+        )
+    }
+    return null
+}
+
+export function Sgraph({ plot }) {
+    const [isCompact, setIsCompact] = useState(() => window.innerWidth < 768)
+
+    useEffect(() => {
+        const handleResize = () => setIsCompact(window.innerWidth < 768)
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
+
+    const sortedData = buildSkillData(plot)
 
     return (
-        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#0f172a', padding: '30px', boxSizing: 'border-box', boxShadow: "0 10px 30px rgba(0,0,0,0.4)", }}>
-            <span className="audit-tooltip" id="tooltip2">
-                <h2 style={{ color: '#fff', fontSize: '30px' }}>Skills Amount Distribution</h2>
-                <span className="info-icon" aria-label="What does this mean?">ⓘ</span>
-                <span className="tooltip-text" id="tooltip2txt">
-                    ps: the graphs in the intra is based on the completion rate. this graph is only based on the amount of the transaction                </span>
+        <div className="panel">
+            <div className="panel-header">
+                <span className="audit-tooltip" id="tooltip2">
+                    <h2 className="panel-title">Skills Amount Distribution</h2>
+                    <span className="info-icon" aria-label="What does this mean?">(i)</span>
+                    <span className="tooltip-text" id="tooltip2txt">
+                        The intra graphs use completion rate. This view is based only on transaction amount.
+                    </span>
+                </span>
+            </div>
 
-            </span>
-            <RadarChart
-                style={{
-                    // backgroundColor: '#0f172a',
-                    width: '100%',
-                    height: '100%',
-                    maxWidth: '100%',
-                    maxHeight: '80vh',
-                    aspectRatio: 1,
-                    fontSize: "20px"
-                }}
-                responsive
-                outerRadius="80%"
-                data={sortedData}
-                margin={{
-                    top: 20,
-                    left: 20,
-                    right: 20,
-                    bottom: 20,
-                }}
-            >
-                <PolarGrid />
-                <PolarAngleAxis dataKey="skill" />
-                <PolarRadiusAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Radar name="skills" dataKey="total" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-            </RadarChart>
+            <div className="chart-shell chart-shell--radar">
+                <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart
+                        outerRadius={isCompact ? "68%" : "80%"}
+                        data={sortedData}
+                        margin={{
+                            top: isCompact ? 8 : 20,
+                            left: isCompact ? 4 : 20,
+                            right: isCompact ? 4 : 20,
+                            bottom: isCompact ? 8 : 20,
+                        }}
+                    >
+                        <PolarGrid />
+                        <PolarAngleAxis dataKey="skill" tick={{ fill: '#cbd5e1', fontSize: isCompact ? 10 : 12 }} />
+                        <PolarRadiusAxis tick={{ fill: '#94a3b8', fontSize: isCompact ? 9 : 11 }} />
+                        <Tooltip content={<SkillsTooltip />} />
+                        <Radar name="skills" dataKey="total" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                    </RadarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 };
-

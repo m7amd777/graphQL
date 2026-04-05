@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 import { formatNumber, calculateXpByPath, getPathName } from "../utils/formatters";
 import { CiLogout } from "react-icons/ci";
 
-
-
 export function Profile({ profile, onLogout }) {
     const [expandXp, setExpandXp] = useState(false);
 
@@ -12,7 +10,7 @@ export function Profile({ profile, onLogout }) {
     const levelSlice = profile?.[2]
 
     const user = userSlice?.data?.user?.[0] ?? null;
-    const xps = xpSlice?.data?.transaction ?? []
+    const xps = useMemo(() => xpSlice?.data?.transaction ?? [], [xpSlice])
     const level = levelSlice?.data?.transaction?.[0]?.amount ?? 0
 
     const totalxp = useMemo(
@@ -36,13 +34,16 @@ export function Profile({ profile, onLogout }) {
         user.login?.slice(0, 2).toUpperCase() ||
         "U";
 
+    const toggleXp = () => setExpandXp((value) => !value)
+
     return (
         <>
             <div className="greetwlogout">
                 <h1 className="greet-title">Welcome back, {user.firstName} {user.lastName}!</h1>
-                <button className="logoutbtn" onClick={logOut}><CiLogout /></button>
+                <button className="logoutbtn" onClick={logOut} aria-label="Log out">
+                    <CiLogout />
+                </button>
             </div>
-
 
             <div className="usercard">
                 <div className="profile-avatar">{initials}</div>
@@ -71,9 +72,20 @@ export function Profile({ profile, onLogout }) {
                     </div>
 
                     <div className="xp-section">
-                        <div className="xp-header" onClick={() => setExpandXp((value) => !value)}>
+                        <div
+                            className="xp-header"
+                            onClick={toggleXp}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                    event.preventDefault();
+                                    toggleXp();
+                                }
+                            }}
+                        >
                             <span>XP by path</span>
-                            <span>{expandXp ? "▼" : "▶"} ({xpByPath.length})</span>
+                            <span>{expandXp ? "v" : ">"} ({xpByPath.length})</span>
                         </div>
 
                         {expandXp && (
@@ -119,4 +131,3 @@ export function Profile({ profile, onLogout }) {
         </>
     );
 }
-

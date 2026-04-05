@@ -55,13 +55,13 @@ export function Auth() {
                             required
                         />
                     </div>
-                    {error && <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>{error}</div>}
+                    {error && <div className="error-message">{error}</div>}
                     <button type="submit" className="auth-button" disabled={loading}>
                         {loading ? 'Signing In...' : 'Sign In'}
                     </button>
                 </form>
                 <div className="auth-footer">
-                    <p>© 2024 Reboot 01. All rights reserved.</p>
+                    <p>Copyright 2024 Reboot 01. All rights reserved.</p>
                 </div>
             </div>
         </div>

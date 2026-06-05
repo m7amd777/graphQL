@@ -1,7 +1,6 @@
 # GraphQL Profile Dashboard
 
-A React single-page application that visualizes your [Reboot01](https://learn.reboot01.com) learning profile using the platform's GraphQL API.
-
+A React single-page application that visualizes your [Reboot01](https://learn.reboot01.com) learning profile using the platform's GraphQL API. You can access the deployed version by visiting `https://graphqlmbadawy.netlify.app/`
 ## Features
 
 - **Authentication** — Login with your Reboot01 credentials (Basic Auth → JWT). Session persists across page reloads with automatic token validation.
@@ -34,7 +33,7 @@ npm install
 npm run dev
 ```
 
-Open `https://graphqlmbadawy.netlify.app/` in your browser, then log in with your Reboot01 username/email and password.
+Open `http://localhost:5173` in your browser, then log in with your Reboot01 username/email and password.
 
 ### Other scripts
 

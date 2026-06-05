@@ -1,16 +1,73 @@
-# React + Vite
+# GraphQL Profile Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React single-page application that visualizes your [Reboot01](https://learn.reboot01.com) learning profile using the platform's GraphQL API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Authentication** — Login with your Reboot01 credentials (Basic Auth → JWT). Session persists across page reloads with automatic token validation.
+- **Profile card** — Displays your name, email, audit ratio, current level, total XP, and a breakdown of XP earned per learning path.
+- **XP Progression chart** — Area/line chart showing cumulative XP growth across completed projects over time.
+- **Skills radar chart** — Radar chart of your top 6 skill transaction amounts.
+- **Audit history** — Paginated table (and card view on mobile) of your past audits with status, dates, captain, and path.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Tool            | Purpose                 |
+| --------------- | ----------------------- |
+| React 19        | UI framework            |
+| React Router v7 | Client-side routing     |
+| Recharts        | Data visualisation      |
+| Vite 7          | Build tool & dev server |
+| react-icons     | Icon set                |
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js 18+
+- A [Reboot01](https://learn.reboot01.com) account
+
+### Install & run
+
+```bash
+npm install
+npm run dev
+```
+
+Open `https://graphqlmbadawy.netlify.app/` in your browser, then log in with your Reboot01 username/email and password.
+
+### Other scripts
+
+```bash
+npm run build    # production build → dist/
+npm run preview  # preview the production build locally
+npm run lint     # run ESLint
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Auth.jsx        # Login form
+│   ├── Dashboard.jsx   # Root layout, fetches all GraphQL data
+│   ├── Profile.jsx     # User card + XP-by-path table
+│   ├── Graphs.jsx      # Wrapper that arranges the three chart panels
+│   ├── FGraph.jsx      # XP progression (area + line chart)
+│   ├── SGraph.jsx      # Skills distribution (radar chart)
+│   └── Audits.jsx      # Paginated audit history
+├── context/
+│   └── AuthContext.jsx # JWT auth state, login/logout, token validation
+├── queries/
+│   ├── UserData.js     # GraphQL queries: user info, XP, level, audits
+│   └── GraphQueries.js # GraphQL queries: XP transactions, skills
+└── utils/
+    └── formatters.js   # Number formatting, XP-by-path helpers
+```
+
+## How It Works
+
+1. On login, credentials are Base64-encoded and sent to the Reboot01 `/api/auth/signin` endpoint, which returns a JWT.
+2. The JWT is stored in `localStorage` and validated against the GraphQL API on every page load.
+3. The `Dashboard` component fires six parallel GraphQL queries on mount and distributes the results to `Profile` and `Graphs`.
+4. All charts are responsive — labels and sizing adapt for screens narrower than 768 px.
